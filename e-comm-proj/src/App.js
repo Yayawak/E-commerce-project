@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { commerce } from './lib/commerce'
-import { Products, Navbar, Cart} from './components'
+import { Products, Navbar, Cart, LoadingPage} from './components'
 
 
 const App = () =>  {
@@ -43,11 +43,12 @@ const App = () =>  {
     console.log('cartState = ') 
     console.log(cart)
 
+    
     return (
         <div>
-            <Navbar totalItems={cart.total_items} />
+            {/* <Navbar totalItems={cart.total_items} /> */}
             {/* <Products products={products} onAddToCart={handleAddToCart}/> */}
-            { !loading ? <Cart cart={cart} /> : <h1>Loading data</h1> }
+            { !loading ? <Cart cart={cart} /> : <LoadingPage />}
         </div>
     )
 }
