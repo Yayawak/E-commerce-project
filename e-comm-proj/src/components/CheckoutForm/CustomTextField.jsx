@@ -9,19 +9,15 @@ const FormInput = ({name,label,required}) => {
             <Controller 
                 control={control}
                 name={name} 
-                render={ ({ field: {onChange,onBlur,value,name,ref} }) => 
-                    (
-                        <TextField 
-                            fullWidth={true}
-                            value={value}
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            inputRef={ref}
-                            required
-                            />
-                    )   
+                render={ ({ field }) => 
+                (
+                    <TextField
+                        fullWidth={true}
+                        label={label}
+                        required={required}
+                    />
+                )
                 }
-                rules={{ required: required}}
             />
         </Grid>
     )
