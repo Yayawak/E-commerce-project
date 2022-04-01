@@ -17,22 +17,30 @@ const App = () =>  {
         try {
             const _cart = await commerce.cart.retrieve();
             setCart(_cart);
-            // setCart(await commerce.cart.retrieve()) //this is not works i guess it use long time to retrieve data
             // console.log('cart.retrieve = ')
             // console.log(_cart)
         } catch (error) {
             console.error(error);
         }
         setLoading(false)
-        // commerce.cart.retrieve().then(cart => console.log(cart))
-        // commerce.cart.retrieve().then(cart => setCart(cart))
-
-        // console.log(`cart contains`)
     }
     const handleAddToCart = async (productId, quantity) => {
-        const item = await commerce.cart.add(productId, quantity);
-        setCart(item.cart)
+        const { cart } = await commerce.cart.add(productId, quantity);
+        setCart(cart);
     }
+    const handleUpdateCartQty = async (productId ,quantity) => {
+        const { cart } = await commerce.cart.update(productId, { quantity });
+        setCart(cart)
+    }
+    const handleRemoveFromCart = async (productId) => {
+        const {cart } = await commerce.cart.remove(productId);
+        setCart(cart)
+    }
+    const handleEmptyCart = async () => {
+        const {cart } = await commerce.cart.empty();
+        setCart(cart)
+    }
+    
     useEffect(() => {
         fetchProducts();
         fetchCart();
@@ -51,7 +59,12 @@ const App = () =>  {
                     <Products products={products} onAddToCart={handleAddToCart}/>
                 } exact/>
                 <Route path='/cart' element={ 
-                    !loading ? <Cart cart={cart} /> : <LoadingPage />
+                    loading ?  <LoadingPage /> : 
+                    <Cart cart={cart} 
+                        handleUpdateCartQty={handleUpdateCartQty }
+                        handleRemoveFromCart={handleRemoveFromCart }
+                        handleEmptyCart={handleEmptyCart }
+                        /> 
                 } exact/>
             </Routes>
         </div>
