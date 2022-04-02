@@ -15,18 +15,32 @@ const AddressForm = ({checkoutToken}) => {
     // return array of object {id, label}
     const countries = Object.entries(shippingCountries)
         .map(([code, name]) => ({id: code, label: name}))
-    console.log(countries);
+    // console.log(countries);
+
+    const subdivisions = Object.entries(shippingSubdivisions)
+        .map(([code, name]) => ({id: code, label: name}))
 
     const fetchShippingCountries = async (checkoutTokenId) => {
         const {countries}= await commerce.services.localeListShippingCountries(checkoutTokenId);
         // console.log(countries);
         setShippingCountries(countries);
-        setShippingCountry(Object.keys(countries)[0])
+        // console.log(Object.keys(countries)[0])
+        setShippingCountry(Object.keys(countries)[0]) //show firssssst country in placeholder
+        // console.log(shippingCountries)
+        console.log(shippingCountry)
+    }
+    const fetchSubdivisions = async (countryCode) => {
+        const {subdivisions} = await commerce.services.localeListSubdivisions(countryCode)
+        setShippingSubdivisions(subdivisions)
+        setShippingSubdivision(Object.keys(subdivisions)[0]) // show first subdiv in placeholder
     }
 
     useEffect(() => {
         fetchShippingCountries(checkoutToken.id)
     }, [])
+    useEffect(() => {
+        if(shippingCountry) fetchSubdivisions(shippingCountry);
+    }, [shippingCountry])
     return (
         <>
             <Typography variant='h6' gutterBottom>Shipping Address</Typography>
@@ -42,7 +56,7 @@ const AddressForm = ({checkoutToken}) => {
                         <Grid item xs={12} sm={6}>
                             <InputLabel>Spipping Country</InputLabel>
                             <Select value={shippingCountry} fullWidth defaultValue={''}
-                                onChange={e =>  setShippingCountries(e.target.value)}>
+                                onChange={e =>  setShippingCountry(e.target.value)}>
                                 {countries.map(country => (
                                     <MenuItem key={country.id} value={country.id}>
                                         {country.label}
@@ -50,15 +64,18 @@ const AddressForm = ({checkoutToken}) => {
                                 ))}
                             </Select>
                         </Grid>
-                        {/* <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={6}>
                             <InputLabel>Spipping Subdivision</InputLabel>
-                            <Select value={} fullWidth onChange={}>
-                                <MenuItem key={} value={}>
-                                    Select Me
-                                </MenuItem>
+                            <Select value={shippingSubdivision} fullWidth defaultValue={''}
+                                onChange={e =>  setShippingSubdivision(e.target.value)}>
+                                {subdivisions.map(subd => (
+                                    <MenuItem key={subd.id} value={subd.id}>
+                                        {subd.label}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        {/* <Grid item xs={12} sm={6}>
                             <InputLabel>Spipping Options</InputLabel>
                             <Select value={} fullWidth onChange={}>
                                 <MenuItem key={} value={}>
