@@ -14,7 +14,7 @@ const FormInput = ({name,label}) => {
                     <TextField
                         fullWidth={true}
                         label={label}
-                        required
+                        required={ true }
                     />
                 )
                 }

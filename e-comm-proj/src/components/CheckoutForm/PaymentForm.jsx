@@ -19,6 +19,7 @@ const PaymentForm = ({ checkoutToken, backStep, nextStep, shippingData, onCaptur
         if (error) console.error(error)
         else {
             // all real data
+            console.log(shippingData)
             const orderData = {
                 line_items: checkoutToken.live.line_items,
                 customer: {
@@ -28,7 +29,7 @@ const PaymentForm = ({ checkoutToken, backStep, nextStep, shippingData, onCaptur
                 }
                     ,
                 shipping: { 
-                    name: 'Primary', 
+                    name: 'International', 
                     street: shippingData.address1,
                     town_city: shippingData.city,
                     country_state: shippingData.shippingSubdivision,
@@ -45,6 +46,8 @@ const PaymentForm = ({ checkoutToken, backStep, nextStep, shippingData, onCaptur
                     }
                 }
             }
+            console.log('new order :')
+            console.log(orderData)
             //sent all data to commerce.js 
             onCaptureCheckout(checkoutToken.id, orderData)
             nextStep()

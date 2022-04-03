@@ -44,6 +44,7 @@ const App = () =>  {
     // refresh cart after paid money
     const refreshCart = async () => {
         const newCart = await commerce.cart.refresh();
+        console.log('refleshed cart')
         setCart(newCart)
     }
     const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
@@ -51,6 +52,7 @@ const App = () =>  {
             const incomingOrder = await commerce.checkout.capture(checkoutTokenId, newOrder);
             setOrder(incomingOrder);
             refreshCart();
+            console.log('handled capture')
         } catch (error) {
             setErrorMessage(error.data.error.message)            
         }
@@ -60,8 +62,6 @@ const App = () =>  {
         fetchProducts();
         fetchCart();
     }, []);
-    // console.log('cartState = ') 
-    // console.log(cart)
 
     
     return (
@@ -84,8 +84,8 @@ const App = () =>  {
                 <Route exact path='/checkout' element={<Checkout cart={cart} 
                     order={order}
                     onCaptureCheckout={handleCaptureCheckout}
-                    error={errorMessage
-                } />} />
+                    error={errorMessage } 
+                />} />
             </Routes>
         </div>
         </Router>
